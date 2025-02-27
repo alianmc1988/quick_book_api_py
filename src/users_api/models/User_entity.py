@@ -1,6 +1,6 @@
 import uuid
 from database.db import Base
-from sqlalchemy import Column, DateTime, Text, func, LargeBinary, Null
+from sqlalchemy import Column, DateTime, func, LargeBinary
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.types import String
 from bcrypt import hashpw, gensalt, checkpw
