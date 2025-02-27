@@ -1,5 +1,4 @@
 
-from typing import Callable
 from fastapi import Depends
 from database.db import get_db
 from users_api.dtos.create_user_dto import Create_User_DTO
@@ -23,18 +22,3 @@ async def get_create_user_use_case(
     db: AsyncSession = Depends(get_db),
 ) -> Create_User_Usecase:
     return Create_User_Usecase(user_repository=user_repo, db=db)
-
-# class Create_User_Usecase:
-#     def __init__(self, create_user_command: Callable[[Create_User_DTO,AsyncSession], User], db: AsyncSession):
-#         self.create_user_command = create_user_command
-#         self.db = db
-
-#     async def execute(self, user: Create_User_DTO) -> User:
-#         return await self.create_user_command(user, self.db)
-
-
-# async def get_create_user_use_case(
-#     create_user_command: Callable[[Create_User_DTO,AsyncSession], User] = create_user_command,
-#     db: AsyncSession = Depends(get_db),
-# ) -> Create_User_Usecase:
-#     return Create_User_Usecase(create_user_command=create_user_command, db=db)

@@ -4,7 +4,12 @@ from sqlalchemy.orm import sessionmaker
 from configurations.config import settings
 
 engine = create_async_engine(settings.DATABASE_URL, echo=True)  
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, class_=AsyncSession, expire_on_commit=False)
+async_session = sessionmaker(
+    engine,
+    class_=AsyncSession,
+    autoflush=False,
+    expire_on_commit=False
+)
 
 Base = declarative_base()
 
@@ -14,7 +19,7 @@ async def init_db():
     await engine.dispose()
 
 async def get_db():
-    async with SessionLocal() as db:
+    async with async_session() as db:
         try:
             yield db
         finally:

@@ -5,6 +5,7 @@ from configurations.config import settings
 
 from database.db import init_db
 from setup.api_router import bootstrap_routes
+from setup.middlewares import bootstrap_middlewares
 
 async def init():
     try:
@@ -16,6 +17,9 @@ async def init():
 
 app = FastAPI()
 bootstrap_routes(app)
+bootstrap_middlewares(app)
+
+
 
 if __name__ == "__main__":
     asyncio.run(init())

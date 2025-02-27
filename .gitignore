@@ -1,2 +1,5 @@
 venv
 devenv
+.mypy_cache
+.vscode
+__pycache__
