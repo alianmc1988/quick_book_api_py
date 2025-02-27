@@ -1,4 +1,3 @@
-import datetime
 from fastapi import Depends
 from database.db import get_db
 from users_api.dtos.create_user_dto import Create_User_DTO
