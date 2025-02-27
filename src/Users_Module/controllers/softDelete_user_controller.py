@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import Depends
 
 from src.baseHandlers.Controller import Base_Controller
-from src.users_api.services.softDelete_user_usecase import SoftDelete_User_Usecase, get_softDelete_user_use_case
+from src.Users_Module.services.softDelete_user_usecase import SoftDelete_User_Usecase, get_softDelete_user_use_case
 
 class SoftDelete_User_Controller(Base_Controller):
     def __init__(self, softDelete_User_Usecase:SoftDelete_User_Usecase):

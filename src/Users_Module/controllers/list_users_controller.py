@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 
 from src.baseHandlers.Controller import Base_Controller
-from src.users_api.services.list_users_usecase import get_list_users_use_case, List_Users_Usecase
+from src.Users_Module.services.list_users_usecase import get_list_users_use_case, List_Users_Usecase
 
 class List_Users_Controller(Base_Controller):
     def __init__(self, list_users_usecase: List_Users_Usecase):

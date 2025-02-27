@@ -1,20 +1,15 @@
-import uuid
-from database.db import Base
 from sqlalchemy import Column, DateTime, func, LargeBinary
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.types import String
 from bcrypt import hashpw, gensalt, checkpw
 from configurations.config import settings
+from src.baseHandlers.Model_Entity import Base_Model
 
 
-class User(Base):
+class User(Base_Model):
     __tablename__ = 'users'
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     password = Column(LargeBinary, nullable=False)
-    created_at = Column(DateTime, default=func.now())
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
     deleted_at = Column(DateTime, nullable=True)
 
 

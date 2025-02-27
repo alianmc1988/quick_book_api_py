@@ -1,8 +1,8 @@
 from fastapi import Depends
 from database.db import get_db
-from src.users_api.dtos.create_user_dto import Create_User_DTO
-from src.users_api.dtos.update_user_dto import Update_User_DTO
-from src.users_api.models.User_entity import User
+from src.Users_Module.dtos.create_user_dto import Create_User_DTO
+from src.Users_Module.dtos.update_user_dto import Update_User_DTO
+from src.Users_Module.models.User_entity import User
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from bcrypt import hashpw, gensalt

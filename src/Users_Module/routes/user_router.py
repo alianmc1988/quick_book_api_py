@@ -1,19 +1,19 @@
 from fastapi import APIRouter, Depends
 from typing import List
 
-from src.users_api.controllers.create_user_controller import Create_User_Controller
-from src.users_api.controllers.get_userById_controller import Get_UserById_Controller
-from src.users_api.controllers.softDelete_user_controller import SoftDelete_User_Controller
-from src.users_api.controllers.update_user_controller import Update_User_Controller
-from src.users_api.dtos.create_user_dto import Create_User_DTO
-from src.users_api.dtos.update_user_dto import Update_User_DTO
-from src.users_api.dtos.user_dto import UserDTO
-from src.users_api.services.create_user_usecase import get_create_user_use_case, Create_User_Usecase
-from src.users_api.services.get_user_byId_usecase import Get_UserById_Usecase, get_userById_use_case
-from src.users_api.services.list_users_usecase import get_list_users_use_case, List_Users_Usecase
-from src.users_api.controllers.list_users_controller import List_Users_Controller
-from src.users_api.services.softDelete_user_usecase import SoftDelete_User_Usecase, get_softDelete_user_use_case
-from src.users_api.services.update_user_usecase import Update_User_Usecase, get_update_user_use_case
+from src.Users_Module.controllers.create_user_controller import Create_User_Controller
+from src.Users_Module.controllers.get_userById_controller import Get_UserById_Controller
+from src.Users_Module.controllers.softDelete_user_controller import SoftDelete_User_Controller
+from src.Users_Module.controllers.update_user_controller import Update_User_Controller
+from src.Users_Module.dtos.create_user_dto import Create_User_DTO
+from src.Users_Module.dtos.update_user_dto import Update_User_DTO
+from src.Users_Module.dtos.user_dto import UserDTO
+from src.Users_Module.services.create_user_usecase import get_create_user_use_case, Create_User_Usecase
+from src.Users_Module.services.get_user_byId_usecase import Get_UserById_Usecase, get_userById_use_case
+from src.Users_Module.services.list_users_usecase import get_list_users_use_case, List_Users_Usecase
+from src.Users_Module.controllers.list_users_controller import List_Users_Controller
+from src.Users_Module.services.softDelete_user_usecase import SoftDelete_User_Usecase, get_softDelete_user_use_case
+from src.Users_Module.services.update_user_usecase import Update_User_Usecase, get_update_user_use_case
 
 user_routes = APIRouter(prefix="/users", tags=["Users API"])
 
