@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import FastAPI, APIRouter
-from users_api.routes.user_router import user_routes
+from src.users_api.routes.user_router import user_routes
 
 routers:List[APIRouter] = [user_routes]
 
