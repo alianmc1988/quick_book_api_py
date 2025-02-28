@@ -1,6 +1,7 @@
 import datetime
 from typing import List
-from pydantic import BaseModel, EmailStr, Field
+from uuid import UUID
+from pydantic import BaseModel, EmailStr
 
 from src.Business_Module.dtos.business_dtos.social_Media_DTO import Business_Social_Media_DTO
 from src.Business_Module.value_objects.Business_Type import Business_Type_Enum
@@ -8,6 +9,7 @@ from src.Users_Module.dtos.role_dto import Role_DTO
 
 
 class Business_DTO(BaseModel):
+    id: UUID
     name:str
     address:str
     type:Business_Type_Enum
