@@ -37,6 +37,13 @@ class Business_Repository:
             if business is None:
                 raise NotFoundException(detail=f'Business with id: {business_id} not found')
             return business
+        
+        async def get_business_by_id_with_delete(self, business_id:str, db:AsyncSession = Depends(get_db))-> Business:
+            result = await db.execute(select(Business).where(Business.id == business_id))
+            business = result.scalars().first()
+            if business is None:
+                raise NotFoundException(detail=f'Business with id: {business_id} not found')
+            return business
 
         async def update_business(self,  business_id:str, business_payload:Update_Business_DTO, db:AsyncSession = Depends(get_db))-> Business:
             payload = business_payload.model_dump(exclude_none=True, exclude_unset=True)
@@ -48,7 +55,18 @@ class Business_Repository:
             
 
         async def delete_business(self, business_id:str, db:AsyncSession = Depends(get_db))-> None:
-            pass
+            business = await self.get_business_by_id(business_id=business_id,db=db)
+            business.soft_delete()
+            await db.commit()
+            await db.refresh(business)
+           
+       
+
+    
+        async def hard_delete_business(self, business_id: str, db: AsyncSession = Depends(get_db)):
+            business = await self.get_business_by_id_with_delete(business_id=business_id, db=db)
+            await db.delete(business)
+            await db.commit()
 
 def get_business_repository()->Business_Repository:
     return Business_Repository()

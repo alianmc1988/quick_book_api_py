@@ -11,7 +11,6 @@ class Business(Base_Model):
     address = Column(String, nullable=False)
     type = Column(SQLAlchemyEnum(Business_Type_Enum), nullable=False)
     isActive = Column(Boolean, default=True)
-    deleted_at = Column(DateTime, nullable=True)
     spaces  = relationship("Space", backref="business", lazy='selectin')
     phone = Column(String,nullable=False, unique=True)
     other_phone = Column(String, nullable=True, unique=True)
@@ -24,9 +23,3 @@ class Business(Base_Model):
 
 
     ___table_args__ = {'extend_existing': True} 
-
-    def soft_delete(self)->None:
-        self.deleted_at = func.now()
-    
-    def restore(self)->None:
-        self.deleted_at = None

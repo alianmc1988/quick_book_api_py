@@ -10,7 +10,6 @@ class User(Base_Model):
     name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     password = Column(LargeBinary, nullable=False)
-    deleted_at = Column(DateTime, nullable=True)
 
 
     def __repr__(self)->str:
@@ -24,12 +23,6 @@ class User(Base_Model):
     
     async def verify_password(self, password: str) -> bool:
         return checkpw(password.encode('utf-8'), self.password.tobytes())
-    
-    def soft_delete(self):
-        self.deleted_at = func.now()
-    
-    def restore(self):
-        self.deleted_at = None
     
 
 
