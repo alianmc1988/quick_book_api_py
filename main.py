@@ -7,6 +7,7 @@ from database.db import init_db
 from setup.api_router import bootstrap_routes
 from setup.middlewares.middlewares import bootstrap_middlewares
 
+
 async def init():
     try:
         await init_db()
@@ -15,10 +16,10 @@ async def init():
         print(f"Error initializing database: {e}")
         exit(1)
 
+
 app = FastAPI()
 bootstrap_routes(app)
 bootstrap_middlewares(app)
-
 
 
 if __name__ == "__main__":
