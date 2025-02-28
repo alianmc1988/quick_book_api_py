@@ -5,7 +5,7 @@ from configurations.config import settings
 
 from database.db import init_db
 from setup.api_router import bootstrap_routes
-from setup.middlewares import bootstrap_middlewares
+from setup.middlewares.middlewares import bootstrap_middlewares
 
 async def init():
     try:

@@ -5,7 +5,8 @@ from pydantic import BaseModel
 from src.Business_Module.value_objects.Space_Type import Space_Type_Enum
 
 
-class Create_Space_DTO(BaseModel):
+class Space_DTO(BaseModel):
+    id:UUID
     name:str
     type:Space_Type_Enum
     capacity:int

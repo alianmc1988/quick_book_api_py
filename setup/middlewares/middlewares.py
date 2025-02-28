@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from setup.global_exception_middleware import global_exception_handler
+from setup.middlewares.global_exception_middleware import global_exception_handler
 
 def setUpCors(app: FastAPI) -> FastAPI:
     origins = [
