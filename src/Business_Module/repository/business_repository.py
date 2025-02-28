@@ -6,11 +6,14 @@ from src.Business_Module.dtos.business_dtos.create_business_dto import Create_Bu
 from src.Business_Module.dtos.business_dtos.update_business_dto import Update_Business_DTO
 from src.Business_Module.models.business_entity import Business
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import exc
+
 
 from src.Business_Module.models.social_media_entity import Business_Social_Media
 from src.Business_Module.models.space_entity import Space
 from src.Users_Module.models.Role_entity import Role
 from src.Users_Module.models.User_entity import User
+from src.errors.Not_Found_Exception import NotFoundException
 
 
 class Business_Repository:
@@ -24,17 +27,21 @@ class Business_Repository:
            
 
         async def list_all_businesses(self, db:AsyncSession = Depends(get_db))-> List[Business]:
-                result = await db.execute(select(Business).filter(Business.deleted_at.is_(None)))
-                return result.scalars().all()
+            result = await db.execute(select(Business).filter(Business.deleted_at.is_(None)))
+            return result.scalars().all()
 
 
-        async def get_business_by_id(self, business_id:str, db = Depends(get_db))-> Business:
+        async def get_business_by_id(self, business_id:str, db:AsyncSession = Depends(get_db))-> Business:
+            result = await db.execute(select(Business).filter(Business.deleted_at.is_(None)).where(Business.id == business_id))
+            business = result.scalars().first()
+            if business is None:
+                raise NotFoundException(detail=f'Business with id: {business_id} not found')
+            return business
+
+        async def update_business(self,  business_id:str, business_payload:Update_Business_DTO, db:AsyncSession = Depends(get_db))-> Business:
             pass
 
-        async def update_business(self,  business_id:str, business_payload:Update_Business_DTO, db = Depends(get_db))-> Business:
-            pass
-
-        async def delete_business(self, business_id:str, db = Depends(get_db))-> None:
+        async def delete_business(self, business_id:str, db:AsyncSession = Depends(get_db))-> None:
             pass
 
 def get_business_repository()->Business_Repository:
