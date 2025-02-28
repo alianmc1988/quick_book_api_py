@@ -1,3 +1,7 @@
+from src.Business_Module.models.social_media_entity import Business_Social_Media
+from src.Business_Module.models.space_entity import Space
+from src.Users_Module.models.Role_entity import Role
+from src.Users_Module.models.User_entity import User
 from typing import List
 from fastapi import Depends
 from sqlalchemy import select
@@ -6,15 +10,10 @@ from src.Business_Module.dtos.business_dtos.create_business_dto import Create_Bu
 from src.Business_Module.dtos.business_dtos.update_business_dto import Update_Business_DTO
 from src.Business_Module.models.business_entity import Business
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import exc
 
 
-from src.Business_Module.models.social_media_entity import Business_Social_Media
-from src.Business_Module.models.space_entity import Space
-from src.Users_Module.models.Role_entity import Role
-from src.Users_Module.models.User_entity import User
 from src.errors.Not_Found_Exception import NotFoundException
-from src.helpers.io_helper import update_object_entity
+from src.helpers.io_helper import update_entity_data
 
 
 class Business_Repository:
@@ -42,7 +41,7 @@ class Business_Repository:
         async def update_business(self,  business_id:str, business_payload:Update_Business_DTO, db:AsyncSession = Depends(get_db))-> Business:
             payload = business_payload.model_dump(exclude_none=True, exclude_unset=True)
             business = await self.get_business_by_id(business_id=business_id, db=db)
-            updated_entity = update_object_entity(payload_obj=payload, entity_to_update=business)
+            updated_entity = update_entity_data(payload_obj=payload, entity_to_update=business)
             await db.commit()
             await db.refresh(updated_entity)
             return business

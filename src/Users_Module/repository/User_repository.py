@@ -5,11 +5,11 @@ from src.Users_Module.dtos.update_user_dto import Update_User_DTO
 from src.Users_Module.models.User_entity import User
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from bcrypt import hashpw, gensalt
-from configurations.config import settings
 from src.errors.Not_Found_Exception import NotFoundException
 from sqlalchemy import exc
 from fastapi import HTTPException
+
+from src.helpers.io_helper import update_entity_data
 
 
 class UserRepository:
@@ -85,15 +85,12 @@ class UserRepository:
         return user
     
     async def update_user(self, user_id: str, user_data: Update_User_DTO, db: AsyncSession = Depends(get_db)):
-        user_to_update = user_data.model_dump(exclude_none=True, exclude_unset=True) 
+        payload = user_data.model_dump(exclude_none=True, exclude_unset=True) 
         user = await self.get_user_by_id(user_id, db=db)
-        for key, value in user_to_update.items():
-            if key == 'password':
-                value = hashpw(value.encode('utf-8'), gensalt(rounds=settings.SALT_ROUNDS))
-            setattr(user, key, value)
+        updated_entity = update_entity_data(payload_obj=payload, entity_to_update=user)
         await db.commit()
-        await db.refresh(user)
-        return user
+        await db.refresh(updated_entity)
+        return updated_entity
     
     async def delete_user(self, user_id: str, db: AsyncSession = Depends(get_db)):
         user = await self.get_user_by_id(user_id, db)

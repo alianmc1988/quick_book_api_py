@@ -1,6 +1,5 @@
 from pydantic import BaseModel, EmailStr
 
-from src.Business_Module.dtos.business_dtos.create_business_dto import Create_Business_DTO
 from src.Business_Module.value_objects.Business_Type import Business_Type_Enum
 
 
