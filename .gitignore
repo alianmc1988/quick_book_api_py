@@ -2,5 +2,5 @@ venv
 devenv
 .mypy_cache
 .vscode
-__pycach
+__pycache__
 .env
