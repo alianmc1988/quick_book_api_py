@@ -9,5 +9,5 @@ class Business_Social_Media(Base_Model):
     profile = Column(String, nullable=False)
     business_id = Column(ForeignKey("businesses.id"))
 
-    def __repr__(self):
+    def __repr__(self)->str:
         return f"<Business(id={self.id}, name='{self.type}')>"

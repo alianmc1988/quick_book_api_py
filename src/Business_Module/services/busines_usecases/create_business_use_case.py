@@ -2,6 +2,7 @@ from fastapi import Depends
 from database.db import get_db
 from src.Business_Module.dtos.business_dtos.create_business_dto import Create_Business_DTO
 from src.Business_Module.repository.business_repository import Business_Repository, get_business_repository
+from src.Business_Module.models.business_entity import Business
 from src.baseHandlers.Use_Case import Base_Use_Case
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -11,7 +12,7 @@ class Create_Business_Usecase(Base_Use_Case):
         self.business_repository = business_repository
         self.db = db
 
-    async def execute(self, business_payload: Create_Business_DTO):
+    async def execute(self, business_payload: Create_Business_DTO)-> Business:
         return await self.business_repository.create_business(business_payload=business_payload, db=self.db)
     
 def get_create_business_usecase(

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 
-class Create_Spot_DTO(BaseModel):
+class Update_Space_DTO(BaseModel):
     pass

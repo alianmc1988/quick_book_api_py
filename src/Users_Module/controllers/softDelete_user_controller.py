@@ -8,7 +8,7 @@ class SoftDelete_User_Controller(Base_Controller):
     def __init__(self, softDelete_User_Usecase:SoftDelete_User_Usecase):
         self.softDelete_User_Usecase = softDelete_User_Usecase
 
-    async def handle(self, id:str):
+    async def handle(self, id:str)->None:
         return await self.softDelete_User_Usecase.execute(id)
     
 

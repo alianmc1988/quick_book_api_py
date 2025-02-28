@@ -19,14 +19,14 @@ class Business(Base_Model):
     social_medias = relationship("Business_Social_Media", backref="business", lazy='selectin')
     roles = relationship("Role", backref="business", lazy='selectin')
 
-    def __repr__(self):
+    def __repr__(self)-> str:
         return f"<Business(id={self.id}, name='{self.name}')>"
 
 
     ___table_args__ = {'extend_existing': True} 
 
-    def soft_delete(self):
+    def soft_delete(self)->None:
         self.deleted_at = func.now()
     
-    def restore(self):
+    def restore(self)->None:
         self.deleted_at = None

@@ -12,7 +12,7 @@ class Space(Base_Model):
     description = Column(Text, nullable=True)
     business_id = Column(ForeignKey("businesses.id"))
 
-    def __repr__(self):
+    def __repr__(self)->str:
         return f"<Space(id={self.id}, name='{self.name}')>"
 
     __table_args__=(
