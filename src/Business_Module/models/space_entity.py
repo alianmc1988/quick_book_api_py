@@ -10,7 +10,7 @@ class Space(Base_Model):
     isActive = (Column(Boolean, default=True))
     capacity = Column(Integer, nullable=False )
     description = Column(Text, nullable=True)
-    business_id = Column(ForeignKey("businesses.id"))
+    business_id = Column(ForeignKey("businesses.id", ondelete="CASCADE"))
 
     def __repr__(self)->str:
         return f"<Space(id={self.id}, name='{self.name}')>"

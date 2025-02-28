@@ -8,11 +8,13 @@ DB_Error_Constants:dict[str, str] = {
         
 
 def sqlAlchemy_error_handler(e:SQLAlchemyError, logger:logging.Logger):
-    message = DB_Error_Constants[e.code]
-    logger.error(f"{__name__}: {message}")
-    if message is not None:
-        return JSONResponse(
-            status_code=422,
-            content={"message": message},
-        )
-    raise e
+    try:
+        message = DB_Error_Constants[e.code]
+        logger.error(f"{__name__}: {message}")
+        if message is not None:
+            return JSONResponse(
+                status_code=422,
+                content={"message": message},
+            )
+    except:
+        raise e
