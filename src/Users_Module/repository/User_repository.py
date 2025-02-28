@@ -85,7 +85,7 @@ class UserRepository:
         return user
     
     async def update_user(self, user_id: str, user_data: Update_User_DTO, db: AsyncSession = Depends(get_db)):
-        user_to_update = user_data.model_dump(exclude_none=True) 
+        user_to_update = user_data.model_dump(exclude_none=True, exclude_unset=True) 
         user = await self.get_user_by_id(user_id, db=db)
         for key, value in user_to_update.items():
             if key == 'password':

@@ -14,6 +14,7 @@ from src.Business_Module.models.space_entity import Space
 from src.Users_Module.models.Role_entity import Role
 from src.Users_Module.models.User_entity import User
 from src.errors.Not_Found_Exception import NotFoundException
+from src.helpers.io_helper import update_object_entity
 
 
 class Business_Repository:
@@ -39,7 +40,13 @@ class Business_Repository:
             return business
 
         async def update_business(self,  business_id:str, business_payload:Update_Business_DTO, db:AsyncSession = Depends(get_db))-> Business:
-            pass
+            payload = business_payload.model_dump(exclude_none=True, exclude_unset=True)
+            business = await self.get_business_by_id(business_id=business_id, db=db)
+            updated_entity = update_object_entity(payload_obj=payload, entity_to_update=business)
+            await db.commit()
+            await db.refresh(updated_entity)
+            return business
+            
 
         async def delete_business(self, business_id:str, db:AsyncSession = Depends(get_db))-> None:
             pass
