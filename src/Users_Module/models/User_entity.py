@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, func, LargeBinary
+from sqlalchemy import Column, LargeBinary
 from sqlalchemy.types import String
 from bcrypt import hashpw, gensalt, checkpw
 from configurations.config import settings
