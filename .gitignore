@@ -1,6 +1,6 @@
-.env
 venv
 devenv
 .mypy_cache
 .vscode
 __pycache__
+.env
