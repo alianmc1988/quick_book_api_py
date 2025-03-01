@@ -23,7 +23,7 @@ The reservation system (for a hotel or restaurant) is an application that allows
 
 1. Clone the repository:
 
+
     ```sh
     git clone https://github.com/yourusername/quick_book_fastapi.git
     cd quick_book_fastapi
-    ```
