@@ -1,6 +1,6 @@
 # Quick Book FastAPI
 
-The reservation system (for a hotel or restaurant) is an application that allows users to make reservations, check availability, and manage existing bookings. Here is a general approach to designing the architecture and key considerations for a reservation system.
+The reservation system (for a hotel or restaurant) is an application that allows users to make reservations, check availability, and manage existing bookings.
 
 ## Features
 
