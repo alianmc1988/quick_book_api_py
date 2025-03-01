@@ -19,7 +19,10 @@ async def test_get_user_by_id_usecase_execute():
     )
     user_id = "some_user_id"
     expected_user = User(
-        id=user_id, name="Test User", email="test@example.com", password=b"hashed_password"
+        id=user_id,
+        name="Test User",
+        email="test@example.com",
+        password=b"hashed_password",
     )
 
     mock_user_repository.get_user_by_id.return_value = expected_user
@@ -51,4 +54,3 @@ async def test_get_user_by_id_usecase_get_user_by_id_use_case():
     assert isinstance(get_user_by_id_usecase, Get_UserById_Usecase)
     assert get_user_by_id_usecase.user_repository == mock_user_repository
     assert get_user_by_id_usecase.db == mock_db
-
