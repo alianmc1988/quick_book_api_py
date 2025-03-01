@@ -1,13 +1,13 @@
 import os
 from dotenv import load_dotenv
 
-env = os.getenv("PY_ENV", "development")
-if env != "production":
+env = os.getenv("PY_ENV", "test")
+if env == "test":
     env = f".{env}"
 else:
     env = ""
 
-file_env_path = os.path.join(os.path.dirname(__file__), f"../.env{env}")
+file_env_path = os.path.join(os.path.dirname(__file__), f"../../.env{env}")
 
 load_dotenv(dotenv_path=file_env_path)
 

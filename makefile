@@ -48,12 +48,15 @@ black:
 # 	$(PYTHON) -m flake8 .
 
 bandit:
-	python -m bandit -r app
+	python -m bandit -r main
 
 # lint: isort black mypy flake8 bandit
 
+.PHONY: test
+
 test:  ## Run tests
-	PY_ENV=test && python pytest
+	set PY_ENV=test
+	python -m pytest
 
 # migrate:  ## Apply latest alembic migrations
 # 	$(PYTHON) -m alembic upgrade head
