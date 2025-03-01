@@ -1,10 +1,11 @@
-
 from fastapi import Depends
 from database.db import get_db
 from src.baseHandlers.Use_Case import Base_Use_Case
-from src.Users_Module.repository.User_repository import  get_user_repository, UserRepository
+from src.Users_Module.repository.User_repository import (
+    get_user_repository,
+    UserRepository,
+)
 from sqlalchemy.ext.asyncio import AsyncSession
-
 
 
 class SoftDelete_User_Usecase(Base_Use_Case):
@@ -12,7 +13,7 @@ class SoftDelete_User_Usecase(Base_Use_Case):
         self.user_repository = user_repository
         self.db = db
 
-    async def execute(self, id:str):
+    async def execute(self, id: str):
         return await self.user_repository.delete_user(id, self.db)
 
 

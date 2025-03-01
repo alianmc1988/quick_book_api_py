@@ -3,9 +3,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class Settings:
     HOST = os.getenv("HOST", "localhost")
-    PORT =  int(os.getenv("PORT", "8000"))
+    PORT = int(os.getenv("PORT", "8000"))
     PY_ENV = os.getenv("PY_ENV", "development")
     DEBUG = os.getenv("DEBUG", "True")
     DB_USER = os.getenv("DB_USER", "postgres")
@@ -18,5 +19,6 @@ class Settings:
     @property
     def DATABASE_URL(self):
         return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+
 
 settings = Settings()

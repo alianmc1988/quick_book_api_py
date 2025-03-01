@@ -1,11 +1,12 @@
-
 from fastapi import Depends
 from database.db import get_db
 from src.baseHandlers.Use_Case import Base_Use_Case
 from src.Users_Module.models.User_entity import User
-from src.Users_Module.repository.User_repository import  get_user_repository, UserRepository
+from src.Users_Module.repository.User_repository import (
+    get_user_repository,
+    UserRepository,
+)
 from sqlalchemy.ext.asyncio import AsyncSession
-
 
 
 class Get_UserById_Usecase(Base_Use_Case):
@@ -14,7 +15,7 @@ class Get_UserById_Usecase(Base_Use_Case):
         self.db = db
 
     async def execute(self, id: str) -> User:
-        return await self.user_repository.get_user_by_id(user_id=id,db=self.db)
+        return await self.user_repository.get_user_by_id(user_id=id, db=self.db)
 
 
 async def get_userById_use_case(

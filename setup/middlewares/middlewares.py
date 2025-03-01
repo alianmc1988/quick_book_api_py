@@ -1,26 +1,24 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from setup.global_exception_middleware import global_exception_handler
+from setup.middlewares.global_exception_middleware import global_exception_handler
+
 
 def setUpCors(app: FastAPI) -> FastAPI:
-    origins = [
-        "http://localhost"
-    ]
+    origins = ["http://localhost"]
 
     app.add_middleware(
         CORSMiddleware,
         allow_methods=["*"],
         allow_credentials=True,
         allow_headers=["*"],
-        allow_origins=origins
+        allow_origins=origins,
     )
     return app
 
-middlewares = [
-    setUpCors,
-    global_exception_handler
-]
+
+middlewares = [setUpCors, global_exception_handler]
+
 
 def bootstrap_middlewares(app: FastAPI) -> FastAPI:
     for mid in middlewares:
