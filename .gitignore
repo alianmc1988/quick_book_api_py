@@ -1,3 +1,4 @@
+.env
 venv
 devenv
 .mypy_cache
