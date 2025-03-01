@@ -2,13 +2,10 @@ import os
 from dotenv import load_dotenv
 
 env = os.getenv("PY_ENV", "development")
-print(f"Before==============================={env}===============================")
 if env != "production":
     env = f".{env}"
 else:
     env = ""
-
-print(f"After==============================={env}===============================")
 
 file_env_path = os.path.join(os.path.dirname(__file__), f"../.env{env}")
 
