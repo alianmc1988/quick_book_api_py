@@ -52,11 +52,14 @@ bandit:
 
 # lint: isort black mypy flake8 bandit
 
-# test:  ## Run tests
-# 	$(PYTHON) -m pytest
+test:  ## Run tests
+	PY_ENV=test && python pytest
 
 # migrate:  ## Apply latest alembic migrations
 # 	$(PYTHON) -m alembic upgrade head
 
 serve:  ## Run application server in development
-	python main.py
+	PY_ENV=production && python main.py
+
+serve_dev:  ## Run application server in development
+	PY_ENV=development && python main.py
