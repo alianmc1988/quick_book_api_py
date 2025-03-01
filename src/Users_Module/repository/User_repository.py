@@ -13,7 +13,6 @@ from src.helpers.io_helper import update_entity_data
 
 
 class UserRepository:
-
     async def create_user(
         self, user: Create_User_DTO, db: AsyncSession = Depends(get_db)
     ) -> User:
