@@ -16,7 +16,7 @@
 # 	psql "${DATABASE_URL}"
 
 up:  ## Run Docker Compose services
-	docker-compose -f docker-compose.yml up quickbook_db -d
+	docker-compose -f docker-compose.yml up db -d
 
 # down:  ## Shutdown Docker Compose services
 # 	docker-compose -f docker-compose.local.yml down

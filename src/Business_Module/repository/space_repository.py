@@ -1,22 +1,73 @@
-from src.Business_Module.dtos.spot_dtos.create_spot_dto import Create_Spot_DTO
-from src.Business_Module.dtos.spot_dtos.update_spot_dto import Update_Spot_DTO
+from typing import List
+
+from fastapi import Depends
+from sqlalchemy import select
+from database.db import get_db
+from src.Business_Module.dtos.space_dtos.create_space_dto import Create_Space_DTO
+from src.Business_Module.dtos.space_dtos.update_space_dto import Update_Space_DTO
+from src.Business_Module.models.space_entity import Space
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.errors.Not_Found_Exception import NotFoundException
+from src.helpers.io_helper import update_entity_data
 
 
 class Space_Repository:
-    async def create_spot(self, spot:Create_Spot_DTO):
-        pass
+    def __init__(self, db: AsyncSession):
+        self.db = db
 
-    async def list_all_spots_from_bar(self, business_id:str):
-        pass
+    async def create_space(self, space_payload: Create_Space_DTO) -> Space:
+        space_to_create = space_payload.model_dump()
+        business = Space(**space_to_create)
+        self.db.add(business)
+        await self.db.commit()
+        await self.db.refresh(business)
+        return business
 
-    async def list_active_spots_from_bar(self, business_id:str):
-        pass
+    async def list_all_spaces(self, active: bool = True) -> List[Space]:
+        result = await self.db.execute(select(Space).filter(Space.deleted_at.is_(None)))
+        return result.scalars().all()
 
-    async def get_spot_by_id(self, business_id:str, spot_id:str):
-        pass
+    async def list_all_spaces_from_business(self, business_id: str) -> List[Space]:
+        result = await self.db.execute(
+            select(Space)
+            .filter(Space.deleted_at.is_(None))
+            .where(Space.business_id == business_id)
+        )
+        return result.scalars().all()
 
-    async def update_spot(self,  business_id:str, spot_payload:Update_Spot_DTO):
-        pass
+    async def find_space_by_id(self, space_id: str) -> Space:
+        space_found = await self.db.execute(
+            select(Space).filter(Space.deleted_at.is_(None)).where(Space.id == space_id)
+        )
+        result = space_found.scalars().first()
+        if result is None:
+            raise NotFoundException(detail=f"Business with id: {space_id} not found")
+        return result
 
-    async def delete_spot(self, business_id:str, spot_id:str):
-        pass
+    async def find_space_by_id_with_deleted(self, id: str) -> Space:
+        result = await self.db.execute(select(Space).where(Space.id == id))
+        response = result.scalars().first()
+        return response
+
+    async def update_space(self, id: str, space_payload: Update_Space_DTO) -> Space:
+        payload = space_payload.model_dump(
+            exclude="business_id", exclude_unset=True, exclude_none=True
+        )
+        space = await self.find_space_by_id(space_id=id)
+        updated_entity = update_entity_data(payload_obj=payload, entity_to_update=space)
+        await self.db.commit()
+        await self.db.refresh(updated_entity)
+        return updated_entity
+
+    async def delete_space(self, id: int):
+        space = await self.find_space_by_id_with_deleted(id)
+        if space is None:
+            raise ValueError(f"Space with id {id} not found")
+        await self.db.delete(space)
+        await self.db.commit()
+        return {"message": "Space deleted successfully"}
+
+
+def get_space_repository(db: AsyncSession = Depends(get_db)) -> Space_Repository:
+    return Space_Repository(db=db)
