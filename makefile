@@ -62,7 +62,4 @@ test:  ## Run tests
 # 	$(PYTHON) -m alembic upgrade head
 
 serve:  ## Run application server in development
-	PY_ENV=production && python main.py
-
-serve_dev:  ## Run application server in development
-	PY_ENV=development && python main.py
+	python main.py
