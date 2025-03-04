@@ -55,11 +55,21 @@ bandit:
 .PHONY: test
 
 test:  ## Run tests
-	set PY_ENV=test
+	export PY_ENV=test
 	python -m pytest
 
 # migrate:  ## Apply latest alembic migrations
 # 	$(PYTHON) -m alembic upgrade head
 
+.PHONY: serve-dev
 serve:  ## Run application server in development
+
+	python main.py
+
+
+.PHONY: serve-dev
+
+serve-dev:  ## Run application server in development
+	export PY_ENV=development
+	export DEBUG=True
 	python main.py

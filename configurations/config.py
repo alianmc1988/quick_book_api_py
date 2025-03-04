@@ -1,28 +1,33 @@
 import os
 from dotenv import load_dotenv
 
-env = os.getenv("PY_ENV", "test")
-if env == "test":
-    env = f".{env}"
-else:
-    env = ""
+env = os.getenv("PY_ENV")
 
-file_env_path = os.path.join(os.path.dirname(__file__), f"../../.env{env}")
+file_env_path: str = ""
+if env == "test":
+    file_env_path = os.path.join(os.path.dirname(__file__), f"../.env.test")
+else:
+    file_env_path = os.path.join(os.path.dirname(__file__), f"../.env")
+
 
 load_dotenv(dotenv_path=file_env_path)
 
-
-class Settings:
-    HOST = os.getenv("HOST", "localhost")
-    PORT = int(os.getenv("PORT", "8000"))
-    PY_ENV = os.getenv("PY_ENV", "development")
-    DEBUG = os.getenv("DEBUG", "True")
-    SALT_ROUNDS = int(os.getenv("SALT_ROUNDS", "10"))
-    DB_URL = os.getenv("DB_URL")
-
-    @property
-    def DATABASE_URL(self):
-        return self.DB_URL
+settings = {
+    "HOST": os.getenv("HOST", "localhost"),
+    "PORT": int(os.getenv("PORT", "8000")),
+    "PY_ENV": os.getenv("PY_ENV"),
+    "DEBUG": os.getenv("DEBUG", "False"),
+    "JWT_SECRET_KEY": os.getenv("JWT_SECRET_KEY"),
+    "SALT_ROUNDS": int(os.getenv("SALT_ROUNDS", "10")),
+    "DB_URL": os.getenv("DB_URL"),
+}
 
 
-settings = Settings()
+def uvicorn_config():
+    return {
+        "reload": settings["DEBUG"],
+        "host": settings["HOST"],
+        "port": settings["PORT"],
+        "app": "main:app",
+        "env_file": file_env_path,
+    }

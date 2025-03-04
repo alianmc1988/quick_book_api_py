@@ -6,6 +6,11 @@ from src.Users_Module.dtos.update_user_dto import Update_User_DTO
 from src.Users_Module.models.User_entity import User
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from src.Users_Module.repository.Role_repository import (
+    RoleRepository,
+    get_role_repository,
+)
+from src.Users_Module.value_objects.Role_Type import Staff_Role_Type_Enum
 from src.errors.Not_Found_Exception import NotFoundException
 from sqlalchemy import exc
 from fastapi import HTTPException
@@ -129,6 +134,17 @@ class UserRepository:
         user = await self.get_user_by_id_with_deleted(user_id, db)
         await db.delete(user)
         await db.commit()
+
+    async def add_role_to_user(
+        self,
+        user_id: str,
+        business_id: str,
+        role_id: Staff_Role_Type_Enum,
+        role_repo: RoleRepository = Depends(get_role_repository),
+    ):
+        await role_repo.add_role_to_user(
+            user_id=user_id, business_id=business_id, role_id=role_id
+        )
 
 
 async def get_user_repository():

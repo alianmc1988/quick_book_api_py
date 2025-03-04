@@ -10,8 +10,8 @@ from src.baseHandlers.Model_Entity import Base_Model
 class Role(Base_Model):
     __tablename__ = "roles"
     role_number = Column(Enum(Staff_Role_Type_Enum), default=Staff_Role_Type_Enum.STAFF)
-    user_id = Column(ForeignKey("users.id"))
-    business_id = Column(ForeignKey("businesses.id"))
+    user_id = Column(ForeignKey("users.id", ondelete="CASCADE"))
+    business_id = Column(ForeignKey("businesses.id", ondelete="CASCADE"))
 
     def convert_numeric_to_literal_role(self) -> Staff_Role_literal_Enum:
         return convert_numeric_to_literal_role(role_number=self.role_number)
