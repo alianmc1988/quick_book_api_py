@@ -4,7 +4,11 @@ from src.Business_Module.repository.business_repository import (
     Business_Repository,
     get_business_repository,
 )
-from src.Users_Module.repository.Role_repository import RoleRepository, get_role_repository
+from src.Users_Module.models.Role_entity import Role
+from src.Users_Module.repository.Role_repository import (
+    RoleRepository,
+    get_role_repository,
+)
 from src.Users_Module.value_objects.Role_Type import (
     Staff_Role_literal_Enum,
     conver_literal_to_numeric_role,
@@ -42,13 +46,12 @@ class Create_Role_Usecase(Base_Use_Case):
 
     async def execute(
         self, user_id: str, business_id: str, role: Staff_Role_literal_Enum
-    ) -> User:
+    ) -> Role:
         role_number = conver_literal_to_numeric_role(role_name=role)
-        user = await self.validation_pipe(user_id=user_id, business_id=business_id)
-        await self.role_repository.create_role_for_user(
+        await self.validation_pipe(user_id=user_id, business_id=business_id)
+        return await self.role_repository.create_role_for_user(
             user_id=user_id, business_id=business_id, role=role_number, db=self.db
         )
-        return user
 
 
 async def get_create_role_use_case(
@@ -58,5 +61,8 @@ async def get_create_role_use_case(
     db: AsyncSession = Depends(get_db),
 ) -> Create_Role_Usecase:
     return Create_Role_Usecase(
-        user_repository=user_repo, business_repository=business_repository, db=db, role_repository=role_repository
+        user_repository=user_repo,
+        business_repository=business_repository,
+        db=db,
+        role_repository=role_repository,
     )

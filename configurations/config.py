@@ -24,6 +24,7 @@ settings = {
 
 
 def uvicorn_config():
+    print("port", settings["PORT"])
     return {
         "reload": settings["DEBUG"],
         "host": settings["HOST"],

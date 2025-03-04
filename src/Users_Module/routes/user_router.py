@@ -9,9 +9,13 @@ from src.Users_Module.controllers.softDelete_user_controller import (
 )
 from src.Users_Module.controllers.update_user_controller import Update_User_Controller
 from src.Users_Module.dtos.create_user_dto import Create_User_DTO
+from src.Users_Module.dtos.role_dto import Role_DTO
 from src.Users_Module.dtos.update_user_dto import Update_User_DTO
 from src.Users_Module.dtos.user_dto import UserDTO
-from src.Users_Module.services.add_role_to_user_usecase import Create_Role_Usecase, get_create_role_use_case
+from src.Users_Module.services.add_role_to_user_usecase import (
+    Create_Role_Usecase,
+    get_create_role_use_case,
+)
 from src.Users_Module.services.create_user_usecase import (
     get_create_user_use_case,
     Create_User_Usecase,
@@ -85,7 +89,8 @@ async def get_user_by_id(
     controller = Get_UserById_Controller(get_UserById_Usecase=get_UserById_Usecase)
     return await controller.handle(id=id)
 
-@user_routes.post("/role", response_model=UserDTO, status_code=201)
+
+@user_routes.post("/role", response_model=Role_DTO, status_code=201)
 async def create_user(
     user_id: str,
     business_id: str,
