@@ -3,11 +3,11 @@ from sqlalchemy import (
     Column,
     ForeignKey,
     Integer,
-    PrimaryKeyConstraint,
     String,
     Text,
     Boolean,
     Enum,
+    UniqueConstraint,
 )
 from src.Business_Module.value_objects.Space_Type import Space_Type_Enum
 from src.baseHandlers.Model_Entity import Base_Model
@@ -26,7 +26,7 @@ class Space(Base_Model):
         return f"<Space(id={self.id}, name='{self.name}')>"
 
     __table_args__ = (
-        PrimaryKeyConstraint("name", "business_id"),
+        UniqueConstraint("name", "business_id"),
         CheckConstraint(
             "capacity > 1 AND capacity < 20000", name="check_capacity_range"
         ),

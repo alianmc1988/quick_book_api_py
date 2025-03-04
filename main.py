@@ -1,7 +1,7 @@
 import asyncio
 from fastapi import FastAPI
 import uvicorn
-from configurations.config import settings
+from configurations.config import settings, uvicorn_config
 
 from database.db import init_db
 from setup.api_router import bootstrap_routes
@@ -24,4 +24,4 @@ bootstrap_middlewares(app)
 
 if __name__ == "__main__":
     asyncio.run(init())
-    uvicorn.run(app, host=settings.HOST, port=settings.PORT)
+    uvicorn.run(**uvicorn_config())
