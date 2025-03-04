@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import Depends
 from database.db import get_db
 from src.Users_Module.dtos.create_user_dto import Create_User_DTO
@@ -43,7 +44,7 @@ class UserRepository:
                 print(e.code)
                 raise e
         else:
-            user_to_create = user.model_dump()
+            user_to_create = user.dict()
             user = User(**user_to_create)
             user.hash_password()
             try:
@@ -60,6 +61,21 @@ class UserRepository:
                         status_code=422,
                     )
                 raise e
+
+    async def bulk_create_users(
+        self, users: List[Create_User_DTO], db: AsyncSession = Depends(get_db)
+    ) -> List[User]:
+        user_list = []
+        for user in users:
+            user_to_create = user.model_dump()
+            user_created = User(**user_to_create)
+            user_created.hash_password()
+            user_list.append(user_created)
+        db.add_all(user_list)
+        await db.commit()
+        for user in user_list:
+            await db.refresh(user)
+        return user_list
 
     async def list_users(self, db: AsyncSession = Depends(get_db)):
         result = await db.execute(select(User).filter(User.deleted_at.is_(None)))
