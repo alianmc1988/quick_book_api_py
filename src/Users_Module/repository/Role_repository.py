@@ -16,7 +16,7 @@ class RoleRepository:
     async def create_role_for_user(
         self,
         user_id: str,
-        role: Staff_Role_Type_Enum,
+        role: int,
         business_id: str,
         db: AsyncSession = Depends(get_db),
     ) -> Role:

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from typing import List
 
+from src.Users_Module.controllers.create_role_controller import Create_Role_Controller
 from src.Users_Module.controllers.create_user_controller import Create_User_Controller
 from src.Users_Module.controllers.get_userById_controller import Get_UserById_Controller
 from src.Users_Module.controllers.softDelete_user_controller import (
@@ -10,6 +11,7 @@ from src.Users_Module.controllers.update_user_controller import Update_User_Cont
 from src.Users_Module.dtos.create_user_dto import Create_User_DTO
 from src.Users_Module.dtos.update_user_dto import Update_User_DTO
 from src.Users_Module.dtos.user_dto import UserDTO
+from src.Users_Module.services.add_role_to_user_usecase import Create_Role_Usecase, get_create_role_use_case
 from src.Users_Module.services.create_user_usecase import (
     get_create_user_use_case,
     Create_User_Usecase,
@@ -31,6 +33,7 @@ from src.Users_Module.services.update_user_usecase import (
     Update_User_Usecase,
     get_update_user_use_case,
 )
+from src.Users_Module.value_objects.Role_Type import Staff_Role_literal_Enum
 
 user_routes = APIRouter(prefix="/users", tags=["Users API"])
 
@@ -81,3 +84,13 @@ async def get_user_by_id(
 ):
     controller = Get_UserById_Controller(get_UserById_Usecase=get_UserById_Usecase)
     return await controller.handle(id=id)
+
+@user_routes.post("/role", response_model=UserDTO, status_code=201)
+async def create_user(
+    user_id: str,
+    business_id: str,
+    role: Staff_Role_literal_Enum,
+    create_role_use_case: Create_Role_Usecase = Depends(get_create_role_use_case),
+):
+    controller = Create_Role_Controller(create_role_use_case=create_role_use_case)
+    return await controller.handle(user_id=user_id, business_id=business_id, role=role)

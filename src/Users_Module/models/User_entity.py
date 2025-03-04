@@ -19,7 +19,7 @@ class User(Base_Model):
 
     def hash_password(self):
         self.password = hashpw(
-            self.password.encode("utf-8"), gensalt(rounds=settings.SALT_ROUNDS)
+            self.password.encode("utf-8"), gensalt(rounds=settings['SALT_ROUNDS'])
         )
 
     async def verify_password(self, password: str) -> bool:

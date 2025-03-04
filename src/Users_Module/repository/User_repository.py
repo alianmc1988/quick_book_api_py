@@ -139,7 +139,7 @@ class UserRepository:
         self,
         user_id: str,
         business_id: str,
-        role_id: Staff_Role_Type_Enum,
+        role: Staff_Role_Type_Enum,
         role_repo: RoleRepository = Depends(get_role_repository),
     ):
         await role_repo.add_role_to_user(
