@@ -15,7 +15,8 @@ class List_Users_Usecase(Base_Use_Case):
         self.db = db
 
     async def execute(self) -> list[User]:
-        return await self.user_repository.list_users(self.db)
+        users = await self.user_repository.list_users(self.db)
+        return users
 
 
 async def get_list_users_use_case(

@@ -17,7 +17,6 @@ class Business(Base_Model):
     social_medias = relationship(
         "Business_Social_Media", backref="business", lazy="selectin"
     )
-    roles = relationship("Role", backref="business", lazy="selectin")
 
     def __repr__(self) -> str:
         return f"<Business(id={self.id}, name='{self.name}')>"
