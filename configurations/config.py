@@ -1,24 +1,36 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+env = os.getenv("PY_ENV")
+
+file_env_path: str = ""
+if env == "test":
+    file_env_path = os.path.join(os.path.dirname(__file__), f"../.env.test")
+else:
+    file_env_path = os.path.join(os.path.dirname(__file__), f"../.env")
 
 
-class Settings:
-    HOST = os.getenv("HOST", "localhost")
-    PORT = int(os.getenv("PORT", "8000"))
-    PY_ENV = os.getenv("PY_ENV", "development")
-    DEBUG = os.getenv("DEBUG", "True")
-    DB_USER = os.getenv("DB_USER", "postgres")
-    DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
-    DB_HOST = os.getenv("DB_HOST", "localhost")
-    DB_PORT = os.getenv("DB_PORT", "5432")
-    DB_NAME = os.getenv("DB_NAME", "mydatabase")
-    SALT_ROUNDS = int(os.getenv("SALT_ROUNDS", "10"))
+load_dotenv(dotenv_path=file_env_path)
 
-    @property
-    def DATABASE_URL(self):
-        return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+settings = {
+    "HOST": os.getenv("HOST", "localhost"),
+    "PORT": int(os.getenv("PORT", "8000")),
+    "PY_ENV": os.getenv("PY_ENV"),
+    "DEBUG": os.getenv("DEBUG", False),
+    "JWT_SECRET_KEY": os.getenv("JWT_SECRET_KEY"),
+    "SALT_ROUNDS": int(os.getenv("SALT_ROUNDS", "10")),
+    "DB_URL": os.getenv("DB_URL"),
+    "ALGORITHM": os.getenv("ALGORITHM", "HS256"),
+    "ACCESS_TOKEN_EXPIRE_MINUTES": int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30")),
+}
 
 
-settings = Settings()
+def uvicorn_config():
+    print("port", settings["PORT"])
+    return {
+        "reload": settings["DEBUG"],
+        "host": settings["HOST"],
+        "port": settings["PORT"],
+        "app": "main:app",
+        "env_file": file_env_path,
+    }
