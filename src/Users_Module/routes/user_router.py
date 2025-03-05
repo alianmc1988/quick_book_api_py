@@ -9,6 +9,7 @@ from src.Users_Module.controllers.softDelete_user_controller import (
     SoftDelete_User_Controller,
 )
 from src.Users_Module.controllers.update_user_controller import Update_User_Controller
+from src.Users_Module.dtos.create_role_dto import Create_Role_DTO
 from src.Users_Module.dtos.create_user_dto import Create_User_DTO
 from src.Users_Module.dtos.role_dto import Role_DTO
 from src.Users_Module.dtos.update_user_dto import Update_User_DTO
@@ -106,10 +107,12 @@ async def get_user_by_id(
     status_code=201,
 )
 async def create_user(
-    user_id: str,
-    business_id: str,
-    role: Staff_Role_literal_Enum,
+    role_payload: Create_Role_DTO,
     create_role_use_case: Create_Role_Usecase = Depends(get_create_role_use_case),
 ):
     controller = Create_Role_Controller(create_role_use_case=create_role_use_case)
-    return await controller.handle(user_id=user_id, business_id=business_id, role=role)
+    return await controller.handle(
+        user_id=role_payload.user_id,
+        role=role_payload.role_name,
+        business_id=role_payload.business_id,
+    )

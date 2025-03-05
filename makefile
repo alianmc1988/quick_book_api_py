@@ -76,8 +76,12 @@ migration-current:
 
 
 .PHONY: serve-dev
-serve:  ## Run application server in development
-	python main.py
+# serve:  ## Run application server in prod
+# 	uvicorn main:app --host 0.0.0.0 --port 8000:8000
+
+.PHONY: serve
+serve:  ## Run application server in prod
+	python -m main.py
 
 
 .PHONY: serve-dev

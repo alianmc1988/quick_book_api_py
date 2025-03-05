@@ -14,23 +14,35 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
     networks:
-      - default
+      - my_network
 
-  db_test:
-    image: postgres:latest
-    container_name: quickbook_db_test
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: quickbook_db_test
+
+  api:
+    build: .
+    image: "qb_api"
+    container_name: fastapi_container
+    entrypoint: ["/app/scripts/docker_entrypoint.sh"]
     ports:
-      - '5433:5432'
+      - "8000:8000"
     volumes:
-      - postgres_data_test:/var/lib/postgresql/data
-
+      - .:/app
+      - /app/__pycache__
+    depends_on:
+      - db
     networks:
-      - default
+      - my_network
+    env_file:
+      - .env
+
+
+
+
 
 volumes:
   postgres_data:
   postgres_data_test:
+
+networks:
+  my_network:
+    driver: bridge
+

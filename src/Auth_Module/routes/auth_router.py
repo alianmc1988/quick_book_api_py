@@ -22,7 +22,7 @@ import jwt
 auth_routes = APIRouter(prefix="/auth", tags=["Authentication API"])
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token", scheme_name="JWT")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/login", scheme_name="JWT")
 
 
 @auth_routes.post(
