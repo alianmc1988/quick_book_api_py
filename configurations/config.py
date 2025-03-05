@@ -16,7 +16,7 @@ settings = {
     "HOST": os.getenv("HOST", "localhost"),
     "PORT": int(os.getenv("PORT", "8000")),
     "PY_ENV": os.getenv("PY_ENV"),
-    "DEBUG": os.getenv("DEBUG", "False"),
+    "DEBUG": os.getenv("DEBUG", False),
     "JWT_SECRET_KEY": os.getenv("JWT_SECRET_KEY"),
     "SALT_ROUNDS": int(os.getenv("SALT_ROUNDS", "10")),
     "DB_URL": os.getenv("DB_URL"),

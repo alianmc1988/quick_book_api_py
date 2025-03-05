@@ -58,17 +58,29 @@ test:  ## Run tests
 	export PY_ENV=test
 	python -m pytest
 
-# migrate:  ## Apply latest alembic migrations
-# 	$(PYTHON) -m alembic upgrade head
+
+.PHONY: migrate-up migrate-down migration-status migration-current
+
+migrate-up:  ## Apply latest alembic migrations
+	python -m alembic upgrade head
+
+migrate-down:  ## Downgrade alembic migrations
+	python -m alembic downgrade -1
+
+migration-status:  ## Show current alembic migration
+	python -m alembic history
+
+migration-current:
+	python -m alembic current
+
+
 
 .PHONY: serve-dev
 serve:  ## Run application server in development
-
 	python main.py
 
 
 .PHONY: serve-dev
-
 serve-dev:  ## Run application server in development
 	export PY_ENV=development
 	export DEBUG=True
