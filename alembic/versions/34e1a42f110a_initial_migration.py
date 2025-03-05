@@ -92,7 +92,7 @@ def upgrade() -> None:
         "users",
         sa.Column("name", sa.VARCHAR(), autoincrement=False, nullable=False),
         sa.Column("email", sa.VARCHAR(), autoincrement=False, nullable=False),
-        sa.Column("password", postgresql.BYTEA(), autoincrement=False, nullable=False),
+        sa.Column("password", sa.VARCHAR(), autoincrement=False, nullable=False),
         sa.Column("id", sa.UUID(), autoincrement=False, nullable=False),
         sa.Column(
             "created_at", postgresql.TIMESTAMP(), autoincrement=False, nullable=True

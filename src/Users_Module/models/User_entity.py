@@ -5,13 +5,14 @@ from bcrypt import hashpw, gensalt, checkpw
 from configurations.config import settings
 from src.baseHandlers.Model_Entity import Base_Model
 from sqlalchemy.orm import relationship
+from passlib.context import CryptContext
 
 
 class User(Base_Model):
     __tablename__ = "users"
     name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
-    password = Column(LargeBinary, nullable=False)
+    password = Column(String, nullable=False)
     roles = relationship("Role", backref="users", lazy="selectin")
 
     def __repr__(self) -> str:
@@ -21,9 +22,10 @@ class User(Base_Model):
         return f"<User(name={self.name}, email={self.email})>"
 
     def hash_password(self):
-        self.password = hashpw(
-            self.password.encode("utf-8"), gensalt(rounds=settings["SALT_ROUNDS"])
-        )
+        bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+        self.password = bcrypt_context.hash(self.password)
 
-    async def verify_password(self, password: str) -> bool:
-        return checkpw(password.encode("utf-8"), self.password.tobytes())
+    def verify_password(self, password: str) -> bool:
+        bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+        result = bcrypt_context.verify(password, self.password)
+        return result

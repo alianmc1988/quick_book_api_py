@@ -49,7 +49,7 @@ class UserRepository:
                 print(e.code)
                 raise e
         else:
-            user_to_create = user.dict()
+            user_to_create = user.model_dump()
             user = User(**user_to_create)
             user.hash_password()
             try:
@@ -108,6 +108,13 @@ class UserRepository:
         self, email: str, db: AsyncSession = Depends(get_db)
     ):
         result = await db.execute(select(User).where(User.email == email))
+        user = result.scalars().first()
+        return user
+
+    async def get_user_by_email(self, email: str, db: AsyncSession = Depends(get_db)):
+        result = await db.execute(
+            select(User).filter(User.deleted_at.is_(None)).where(User.email == email)
+        )
         user = result.scalars().first()
         return user
 
