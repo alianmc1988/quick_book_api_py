@@ -15,9 +15,9 @@ class Update_User_Usecase(Base_Use_Case):
         self.user_repository = user_repository
         self.db = db
 
-    async def execute(self, id: str, user: Update_User_DTO) -> User:
+    async def execute(self, id: str, user: Update_User_DTO, logged_user: str) -> User:
         return await self.user_repository.update_user(
-            user_id=id, user_data=user, db=self.db
+            user_id=id, user_data=user, db=self.db, logged_user=logged_user
         )
 
 

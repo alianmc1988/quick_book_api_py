@@ -18,8 +18,8 @@
 up:  ## Run Docker Compose services
 	docker-compose -f docker-compose.yml up db -d
 
-# down:  ## Shutdown Docker Compose services
-# 	docker-compose -f docker-compose.local.yml down
+down:  ## Shutdown Docker Compose services
+	docker-compose -f docker-compose.yml down
 
 # venv: requirements-dev.txt Makefile
 # 	python3 -m pip install --upgrade pip setuptools wheel
@@ -59,10 +59,13 @@ test:  ## Run tests
 	python -m pytest
 
 
-.PHONY: migrate-up migrate-down migration-status migration-current
+.PHONY: migrate-up migrate-down migration-status migration-current create-migration
 
 migrate-up:  ## Apply latest alembic migrations
 	python -m alembic upgrade head
+
+create-migration:  ## Create a new alembic migration with a name
+	alembic revision --autogenerate -m "$(n)"
 
 migrate-down:  ## Downgrade alembic migrations
 	python -m alembic downgrade -1
@@ -74,10 +77,6 @@ migration-current:
 	python -m alembic current
 
 
-
-.PHONY: serve-dev
-# serve:  ## Run application server in prod
-# 	uvicorn main:app --host 0.0.0.0 --port 8000:8000
 
 .PHONY: serve
 serve:  ## Run application server in prod

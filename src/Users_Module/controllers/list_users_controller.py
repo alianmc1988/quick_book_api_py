@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import Depends, HTTPException
 
+from src.Auth_Module.constants.access_levels import AccessLevel
 from src.Users_Module.models.User_entity import User
 from src.baseHandlers.Controller import Base_Controller
 from src.Users_Module.services.list_users_usecase import (
@@ -11,9 +12,10 @@ from src.Users_Module.services.list_users_usecase import (
 
 class List_Users_Controller(Base_Controller):
     def __init__(self, list_users_usecase: List_Users_Usecase):
+        super().__init__(access_level=AccessLevel.SUDO)
         self.list_users_usecase = list_users_usecase
 
-    async def handle(self) -> List[User]:
+    async def define(self) -> List[User]:
         try:
             return await self.list_users_usecase.execute()
         except Exception as e:

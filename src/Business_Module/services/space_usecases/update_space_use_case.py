@@ -14,9 +14,11 @@ class Update_Space_Usecase(Base_Use_Case):
     def __init__(self, space_repository: Space_Repository):
         self.space_repository = space_repository
 
-    async def execute(self, id: str, space_payload: Create_Space_DTO) -> Business:
+    async def execute(
+        self, id: str, space_payload: Create_Space_DTO, logged_user: str
+    ) -> Business:
         return await self.space_repository.update_space(
-            id=id, space_payload=space_payload
+            id=id, space_payload=space_payload, logged_user=logged_user
         )
 
 

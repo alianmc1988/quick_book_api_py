@@ -39,27 +39,35 @@ from src.Users_Module.services.update_user_usecase import (
     Update_User_Usecase,
     get_update_user_use_case,
 )
-from src.Users_Module.value_objects.Role_Type import Staff_Role_literal_Enum
 
 user_routes = APIRouter(prefix="/user", tags=["Users API"])
 
 
-@user_routes.post("/", response_model=UserDTO, status_code=201)
+@user_routes.post(
+    "/",
+    response_model=UserDTO,
+    status_code=201,
+)
 async def create_user(
     user: Create_User_DTO,
     create_user_use_case: Create_User_Usecase = Depends(get_create_user_use_case),
 ):
-    controller = Create_User_Controller(create_user_use_case=create_user_use_case)
-    return await controller.handle(user=user)
+
+    controller = Create_User_Controller(
+        create_user_use_case=create_user_use_case, user_payload=user
+    )
+    return await controller.handle()
 
 
 @user_routes.get(
     "/", dependencies=[Depends(authentication_middleware)], response_model=List[UserDTO]
 )
 async def list_users(
+    request: Request,
     list_users_use_case: List_Users_Usecase = Depends(get_list_users_use_case),
 ):
     controller = List_Users_Controller(list_users_usecase=list_users_use_case)
+    controller.access_control(request=request)
     return await controller.handle()
 
 
@@ -69,10 +77,14 @@ async def list_users(
 async def update_user(
     id: str,
     user: Update_User_DTO,
+    request: Request,
     update_user_use_case: Update_User_Usecase = Depends(get_update_user_use_case),
 ):
-    controller = Update_User_Controller(update_user_use_case=update_user_use_case)
-    return await controller.handle(id=id, user=user)
+    controller = Update_User_Controller(
+        update_user_use_case=update_user_use_case, id=id, user=user
+    )
+    controller.access_control(request=request)
+    return await controller.handle()
 
 
 @user_routes.delete(
@@ -80,14 +92,17 @@ async def update_user(
 )
 async def soft_delete_user(
     id: str,
+    request: Request,
     softDelete_user_use_case: SoftDelete_User_Usecase = Depends(
         get_softDelete_user_use_case
     ),
 ):
     controller = SoftDelete_User_Controller(
-        softDelete_User_Usecase=softDelete_user_use_case
+        softDelete_User_Usecase=softDelete_user_use_case,
+        id=id,
     )
-    return await controller.handle(id=id)
+    controller.access_control(request=request)
+    return await controller.handle()
 
 
 @user_routes.get(
@@ -96,8 +111,10 @@ async def soft_delete_user(
 async def get_user_by_id(
     id: str, get_UserById_Usecase: Get_UserById_Usecase = Depends(get_userById_use_case)
 ):
-    controller = Get_UserById_Controller(get_UserById_Usecase=get_UserById_Usecase)
-    return await controller.handle(id=id)
+    controller = Get_UserById_Controller(
+        get_UserById_Usecase=get_UserById_Usecase, id=id
+    )
+    return await controller.handle()
 
 
 @user_routes.post(
@@ -106,13 +123,14 @@ async def get_user_by_id(
     response_model=Role_DTO,
     status_code=201,
 )
-async def create_user(
+async def create_role(
     role_payload: Create_Role_DTO,
+    request: Request,
     create_role_use_case: Create_Role_Usecase = Depends(get_create_role_use_case),
 ):
-    controller = Create_Role_Controller(create_role_use_case=create_role_use_case)
-    return await controller.handle(
-        user_id=role_payload.user_id,
-        role=role_payload.role_name,
-        business_id=role_payload.business_id,
+    controller = Create_Role_Controller(
+        create_role_use_case=create_role_use_case,
+        role_payload=role_payload,
     )
+    controller.access_control(request=request)
+    return await controller.handle()

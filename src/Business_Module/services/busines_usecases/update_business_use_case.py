@@ -18,10 +18,13 @@ class Update_Business_Usecase(Base_Use_Case):
         self.db = db
 
     async def execute(
-        self, business_id: str, business_payload: Update_Business_DTO
+        self, business_id: str, business_payload: Update_Business_DTO, logged_user: str
     ) -> Business:
         return await self.business_repository.update_business(
-            business_id=business_id, business_payload=business_payload, db=self.db
+            business_id=business_id,
+            business_payload=business_payload,
+            db=self.db,
+            logged_user=logged_user,
         )
 
 

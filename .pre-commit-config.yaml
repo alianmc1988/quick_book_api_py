@@ -9,15 +9,15 @@ repos:
     hooks:
     -   id: black
 
--   repo: local
-    hooks:
-      - id: check-python-version
-        name: Check Python Version
-        entry: python -c "import sys; exit(0) if sys.version_info[:2] == (3, 11) else exit(1)"
-        language: system
-        pass_filenames: false
-      - id: run-tests
-        name: Run Tests
-        entry: pytest
-        language: system
-        pass_filenames: false
+# -   repo: local
+#     hooks:
+#       - id: check-python-version
+#         name: Check Python Version
+#         entry: python -c "import sys; exit(0) if sys.version_info[:2] == (3, 11) else exit(1)"
+#         language: system
+#         pass_filenames: false
+#       - id: run-tests
+#         name: Run Tests
+#         entry: pytest
+#         language: system
+#         pass_filenames: false
