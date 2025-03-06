@@ -11,7 +11,7 @@ class Create_Space_DTO(BaseModel):
     description: Text | None = None
     business_id: str | None = None
 
-    def set_business_id(self, business_id: str):
+    def set_business_id(self, business_id: str) -> None:
         self.business_id = business_id
 
     class Config:

@@ -15,7 +15,7 @@ class Create_Role_DTO(BaseModel):
     role_name: RoleDTO
     business_id: str | None = None
 
-    def set_business_id(self, business_id: str):
+    def set_business_id(self, business_id: str) -> None:
         self.business_id = business_id
 
     class Config:
