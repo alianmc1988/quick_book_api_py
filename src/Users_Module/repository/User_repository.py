@@ -122,18 +122,23 @@ class UserRepository:
         self,
         user_id: str,
         user_data: Update_User_DTO,
+        logged_user: str,
         db: AsyncSession = Depends(get_db),
     ):
         payload = user_data.model_dump(exclude_none=True, exclude_unset=True)
         user = await self.get_user_by_id(user_id, db=db)
-        updated_entity = update_entity_data(payload_obj=payload, entity_to_update=user)
+        updated_entity = update_entity_data(
+            payload_obj=payload, entity_to_update=user, logged_user=logged_user
+        )
         await db.commit()
         await db.refresh(updated_entity)
         return updated_entity
 
-    async def delete_user(self, user_id: str, db: AsyncSession = Depends(get_db)):
+    async def delete_user(
+        self, user_id: str, logged_user: str, db: AsyncSession = Depends(get_db)
+    ):
         user = await self.get_user_by_id(user_id, db)
-        user.soft_delete()
+        user.soft_delete(logged_user=logged_user)
         await db.commit()
         await db.refresh(user)
 
@@ -142,16 +147,10 @@ class UserRepository:
         await db.delete(user)
         await db.commit()
 
-    async def add_role_to_user(
-        self,
-        user_id: str,
-        business_id: str,
-        role: Staff_Role_Type_Enum,
-        role_repo: RoleRepository = Depends(get_role_repository),
-    ):
-        await role_repo.add_role_to_user(
-            user_id=user_id, business_id=business_id, role_id=role_id
-        )
+    async def find_master_users(self, db: AsyncSession = Depends(get_db)):
+        users = await db.execute(select(User).where(User.is_master.is_(True)))
+        result = users.scalars().all()
+        return result
 
 
 async def get_user_repository():

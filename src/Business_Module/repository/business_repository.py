@@ -18,18 +18,36 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.errors.Not_Found_Exception import NotFoundException
 from src.helpers.io_helper import update_entity_data
+from sqlalchemy.exc import SQLAlchemyError
 
 
 class Business_Repository:
     async def create_business(
-        self, business_payload: Create_Business_DTO, db: AsyncSession = Depends(get_db)
+        self,
+        business_payload: Create_Business_DTO,
+        master_users: List[User],
+        db: AsyncSession = Depends(get_db),
     ) -> Business:
-        business_to_create = business_payload.model_dump(exclude_none=True)
-        business = Business(**business_to_create)
-        db.add(business)
-        await db.commit()
-        await db.refresh(business)
-        return business
+        try:
+            business_to_create = business_payload.model_dump(exclude_none=True)
+            business = Business(**business_to_create)
+            db.add(business)
+            await db.flush()
+
+            roles: List[Role] = []
+            if master_users:
+                for user in master_users:
+                    roles.append(Role(business_id=business.id, user_id=user.id, role=0))
+                db.add_all(roles)
+
+            await db.commit()
+
+            await db.refresh(business)
+            return business
+
+        except SQLAlchemyError as e:
+            await db.rollback()
+            raise e
 
     async def list_all_businesses(
         self, db: AsyncSession = Depends(get_db)
@@ -65,22 +83,23 @@ class Business_Repository:
         self,
         business_id: str,
         business_payload: Update_Business_DTO,
+        logged_user: str,
         db: AsyncSession = Depends(get_db),
     ) -> Business:
         payload = business_payload.model_dump(exclude_none=True, exclude_unset=True)
         business = await self.get_business_by_id(business_id=business_id, db=db)
         updated_entity = update_entity_data(
-            payload_obj=payload, entity_to_update=business
+            payload_obj=payload, entity_to_update=business, logged_user=logged_user
         )
         await db.commit()
         await db.refresh(updated_entity)
         return business
 
     async def delete_business(
-        self, business_id: str, db: AsyncSession = Depends(get_db)
+        self, business_id: str, logged_user: str, db: AsyncSession = Depends(get_db)
     ) -> None:
         business = await self.get_business_by_id(business_id=business_id, db=db)
-        business.soft_delete()
+        business.soft_delete(logged_user=logged_user)
         await db.commit()
         await db.refresh(business)
 

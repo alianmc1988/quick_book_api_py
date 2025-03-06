@@ -50,17 +50,21 @@ class Space_Repository:
         response = result.scalars().first()
         return response
 
-    async def update_space(self, id: str, space_payload: Update_Space_DTO) -> Space:
+    async def update_space(
+        self, id: str, space_payload: Update_Space_DTO, logged_user: str
+    ) -> Space:
         payload = space_payload.model_dump(
             exclude="business_id", exclude_unset=True, exclude_none=True
         )
         space = await self.find_space_by_id(space_id=id)
-        updated_entity = update_entity_data(payload_obj=payload, entity_to_update=space)
+        updated_entity = update_entity_data(
+            payload_obj=payload, entity_to_update=space, logged_user=logged_user
+        )
         await self.db.commit()
         await self.db.refresh(updated_entity)
         return updated_entity
 
-    async def delete_space(self, id: int):
+    async def delete_space(self, id: int, logged_user: str):
         space = await self.find_space_by_id_with_deleted(id)
         if space is None:
             raise ValueError(f"Space with id {id} not found")

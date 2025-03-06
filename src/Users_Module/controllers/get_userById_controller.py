@@ -10,11 +10,13 @@ from src.Users_Module.services.get_user_byId_usecase import (
 
 
 class Get_UserById_Controller(Base_Controller):
-    def __init__(self, get_UserById_Usecase: Get_UserById_Usecase):
+    def __init__(self, get_UserById_Usecase: Get_UserById_Usecase, id: str):
+        super().__init__()
+        self.id = id
         self.get_UserById_Usecase = get_UserById_Usecase
 
-    async def handle(self, id: str) -> User:
-        return await self.get_UserById_Usecase.execute(id)
+    async def define(self) -> User:
+        return await self.get_UserById_Usecase.execute(id=self.id)
 
 
 def get_userById_controller(

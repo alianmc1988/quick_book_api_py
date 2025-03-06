@@ -1,7 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, UniqueConstraint
 from src.Users_Module.value_objects.Role_Type import (
     Staff_Role_Type_Enum,
-    Staff_Role_literal_Enum,
     convert_numeric_to_literal_role,
 )
 from src.baseHandlers.Model_Entity import Base_Model
@@ -16,10 +15,7 @@ class Role(Base_Model):
     @property
     def role_name(self) -> str:
         data = convert_numeric_to_literal_role(self.role).value
-        print(
-            "=======================================================================",
-            data,
-        )
+
         return data
 
     def __repr__(self) -> str:

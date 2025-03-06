@@ -13,8 +13,10 @@ class SoftDelete_User_Usecase(Base_Use_Case):
         self.user_repository = user_repository
         self.db = db
 
-    async def execute(self, id: str):
-        return await self.user_repository.delete_user(id, self.db)
+    async def execute(self, id: str, logged_user: str):
+        return await self.user_repository.delete_user(
+            user_id=id, db=self.db, logged_user=logged_user
+        )
 
 
 async def get_softDelete_user_use_case(

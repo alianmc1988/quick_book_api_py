@@ -14,9 +14,9 @@ class Delete_Business_Usecase(Base_Use_Case):
         self.business_repository = business_repository
         self.db = db
 
-    async def execute(self, business_id: str) -> Business:
+    async def execute(self, business_id: str, logged_user: str) -> Business:
         return await self.business_repository.delete_business(
-            business_id=business_id, db=self.db
+            business_id=business_id, db=self.db, logged_user=logged_user
         )
 
 

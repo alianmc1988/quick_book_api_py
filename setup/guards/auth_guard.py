@@ -19,7 +19,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
 
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token", scheme_name="JWT")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/login", scheme_name="JWT")
 
 
 async def get_current_user(

@@ -1,5 +1,5 @@
 from datetime import timedelta, datetime
-from typing import Annotated
+from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, ExpiredSignatureError
@@ -8,6 +8,7 @@ from passlib.context import CryptContext
 from database.db import get_db
 from src.Auth_Module.dtos.auth_dto import Auth_DTO
 from src.Auth_Module.dtos.auth_login_dto import AuthLogin_DTO
+from src.Users_Module.dtos.role_dto import Role_DTO
 from src.Users_Module.dtos.user_dto import UserDTO
 from src.Users_Module.models.User_entity import User
 from src.Users_Module.repository.User_repository import UserRepository
@@ -22,7 +23,7 @@ import jwt
 auth_routes = APIRouter(prefix="/auth", tags=["Authentication API"])
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token", scheme_name="JWT")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/login", scheme_name="JWT")
 
 
 @auth_routes.post(
@@ -41,8 +42,10 @@ async def login(
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    token_payload: dict = {"id": str(user.id), "roles": user.roles}
+    roles = [role for role in user.roles if len(user.roles) > 0]
+    token_payload: dict = {"id": str(user.id), "roles": str(roles)}
     token = create_access_token(data=token_payload)
+    user.roles = roles
     response: Auth_DTO = Auth_DTO(access_token=token, token_type="bearer", user=user)
     return response
 

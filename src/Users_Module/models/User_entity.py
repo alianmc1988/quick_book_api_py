@@ -1,6 +1,6 @@
 from sqlalchemy import Column, LargeBinary
 from .Role_entity import Role
-from sqlalchemy.types import String
+from sqlalchemy.types import String, BOOLEAN
 from bcrypt import hashpw, gensalt, checkpw
 from configurations.config import settings
 from src.baseHandlers.Model_Entity import Base_Model
@@ -14,12 +14,16 @@ class User(Base_Model):
     email = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
     roles = relationship("Role", backref="users", lazy="selectin")
+    is_master = Column(BOOLEAN, default=False)
 
     def __repr__(self) -> str:
         return f"<User(name={self.name}, email={self.email})>"
 
     def __str__(self):
         return f"<User(name={self.name}, email={self.email})>"
+
+    def is_master_user(self):
+        return self.is_master
 
     def hash_password(self):
         bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
