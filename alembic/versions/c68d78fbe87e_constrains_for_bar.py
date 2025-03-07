@@ -19,17 +19,6 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     op.execute("CREATE EXTENSION IF NOT EXISTS pg_trgm")
-    op.create_check_constraint(
-        "check_capacity_range",
-        "spaces",
-        "capacity > 1 AND capacity < 20000",
-    )
-    op.create_check_constraint(
-        "check_description_length",
-        "spaces",
-        "char_length(description) <= 250",
-    )
-
     op.create_unique_constraint(
         "uq_business_name_address_type",
         "businesses",
@@ -39,6 +28,4 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     op.drop_constraint("uq_business_name_address_type", "businesses", type_="unique")
-    op.drop_constraint("check_capacity_range", "spaces", type_="check")
-    op.drop_constraint("check_description_length", "spaces", type_="check")
     op.execute("DROP EXTENSION IF EXISTS pg_trgm")

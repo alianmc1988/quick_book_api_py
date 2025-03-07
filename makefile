@@ -80,7 +80,7 @@ migration-current:
 
 .PHONY: serve
 serve:  ## Run application server in prod
-	python -m main.py
+	python main.py
 
 
 .PHONY: serve-dev
