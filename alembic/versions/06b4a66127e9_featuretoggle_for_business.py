@@ -1,7 +1,7 @@
 """featureToggle for business
 
 Revision ID: 06b4a66127e9
-Revises: 299ffef9aa3d
+Revises: 4194848bec00
 Create Date: 2025-03-07 10:30:08.862259
 
 """
@@ -14,7 +14,7 @@ from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision: str = "06b4a66127e9"
-down_revision: Union[str, None] = "299ffef9aa3d"
+down_revision: Union[str, None] = "4194848bec00"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
