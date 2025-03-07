@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/bin/sh
+set -e
+
+exec "$@"
+
 echo "Running post-build commands..."
 # Run migrations, create folders, etc.
 make migrate-up
