@@ -23,7 +23,7 @@ Base = declarative_base()
 
 
 async def init_db() -> None:
-    async with engine.begin() as conn:
+    async with engine.begin():
         pass
     await engine.dispose()
 

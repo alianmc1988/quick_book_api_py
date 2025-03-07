@@ -1,3 +1,8 @@
+import sqlalchemy as sa
+from typing import Sequence, Union
+
+from alembic import op
+
 """create updated-by column
 
 Revision ID: 4194848bec00
@@ -6,11 +11,6 @@ Create Date: 2025-03-06 15:02:47.797557
 
 """
 
-from typing import Sequence, Union
-
-from alembic import op
-import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision: str = "4194848bec00"

@@ -44,8 +44,8 @@ black:
 # mypy:
 # 	$(PYTHON) -m mypy .
 
-# flake8:
-# 	$(PYTHON) -m flake8 .
+flake8:
+	python -m flake8 .
 
 bandit:
 	python -m bandit -r main

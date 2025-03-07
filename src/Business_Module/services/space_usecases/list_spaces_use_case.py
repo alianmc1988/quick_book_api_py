@@ -1,5 +1,4 @@
 from fastapi import Depends
-from database.db import get_db
 from src.Business_Module.models.business_entity import Business
 from src.Business_Module.repository.space_repository import (
     Space_Repository,

@@ -2,13 +2,10 @@ import logging
 from fastapi import FastAPI, Request, Response
 from fastapi.responses import JSONResponse
 
-# from jose import ExpiredSignatureError, JWTError
 from starlette.middleware.base import BaseHTTPMiddleware
 from sqlalchemy.exc import SQLAlchemyError
 
 from database.db_error_handler import sqlAlchemy_error_handler
-from src.errors.Unauthorized_Exception import UnauthorizedException
-from jwt.exceptions import ExpiredSignatureError
 
 
 logging.basicConfig(level=logging.ERROR)

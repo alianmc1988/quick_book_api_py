@@ -16,5 +16,5 @@ def sqlAlchemy_error_handler(e: SQLAlchemyError, logger: logging.Logger):
                 status_code=422,
                 content={"message": message},
             )
-    except:
+    except Exception as e:
         raise e

@@ -1,5 +1,4 @@
 from fastapi import Depends
-from database.db import get_db
 from src.Business_Module.dtos.space_dtos.create_space_dto import Create_Space_DTO
 from src.Business_Module.models.business_entity import Business
 from src.Business_Module.repository.space_repository import (
@@ -7,7 +6,6 @@ from src.Business_Module.repository.space_repository import (
     get_space_repository,
 )
 from src.baseHandlers.Use_Case import Base_Use_Case
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class Create_Space_Usecase(Base_Use_Case):

@@ -1,7 +1,7 @@
 import asyncio
 from fastapi import FastAPI
 import uvicorn
-from configurations.config import settings, uvicorn_config
+from configurations.config import uvicorn_config
 
 from database.db import init_db
 from setup.api_router import bootstrap_routes

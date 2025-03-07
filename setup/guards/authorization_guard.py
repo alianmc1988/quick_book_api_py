@@ -1,23 +1,16 @@
 import logging
 from typing import Annotated
-from fastapi import Depends, FastAPI, Request, Response
-from fastapi.responses import JSONResponse
+from fastapi import Depends, Request
 
-# from jose import ExpiredSignatureError, JWTError
 from fastapi.security import OAuth2PasswordBearer
 import jwt
-from starlette.middleware.base import BaseHTTPMiddleware
-from sqlalchemy.exc import SQLAlchemyError
 
 from database.db import get_db
-from database.db_error_handler import sqlAlchemy_error_handler
 from src.Users_Module.models.User_entity import User
 from src.Users_Module.repository.User_repository import (
     UserRepository,
-    get_user_repository,
 )
 from src.errors.Unauthorized_Exception import UnauthorizedException
-from jwt.exceptions import ExpiredSignatureError
 from configurations.config import settings
 from sqlalchemy.ext.asyncio import AsyncSession
 
