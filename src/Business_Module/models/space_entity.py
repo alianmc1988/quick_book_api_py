@@ -1,3 +1,4 @@
+from http.client import HTTPException
 from sqlalchemy import (
     CheckConstraint,
     Column,
@@ -21,6 +22,7 @@ class Space(Base_Model):
     capacity = Column(Integer, nullable=False)
     description = Column(Text, nullable=True)
     business_id = Column(ForeignKey("businesses.id", ondelete="CASCADE"))
+    available = Column(Boolean, default=True)
 
     def __repr__(self) -> str:
         return f"<Space(id={self.id}, name='{self.name}')>"
@@ -34,3 +36,11 @@ class Space(Base_Model):
             "char_length(description) <= 250", name="check_description_length"
         ),
     )
+
+    def book_space(self) -> None:
+        if not self.isActive:
+            raise HTTPException(status_code=422, detail="Space is not active")
+        if self.isActive:
+            self.available = False
+            return
+        raise HTTPException(status_code=422, detail="Space is already booked")

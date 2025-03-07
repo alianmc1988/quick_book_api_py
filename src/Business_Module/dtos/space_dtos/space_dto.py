@@ -12,3 +12,4 @@ class Space_DTO(BaseModel):
     capacity: int
     description: Text | None = False
     business_id: UUID
+    available: bool
