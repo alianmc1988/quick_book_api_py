@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Boolean, Enum as SQLAlchemyEnum
+from sqlalchemy import Column, String, Boolean, Enum as SQLAlchemyEnum, UniqueConstraint
 from src.baseHandlers.Model_Entity import Base_Model
 from src.Business_Module.value_objects.Business_Type import Business_Type_Enum
 from sqlalchemy.orm import relationship
@@ -24,4 +24,7 @@ class Business(Base_Model):
     def __repr__(self) -> str:
         return f"<Business(id={self.id}, name='{self.name}')>"
 
-    ___table_args__ = {"extend_existing": True}
+    ___table_args__ = (
+        {"extend_existing": True},
+        UniqueConstraint("name", "address", "type"),
+    )
