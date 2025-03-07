@@ -1,6 +1,6 @@
 import logging
 from typing import Annotated
-from fastapi import Depends, FastAPI, Request
+from fastapi import Depends, Request
 
 from fastapi.security import OAuth2PasswordBearer
 import jwt

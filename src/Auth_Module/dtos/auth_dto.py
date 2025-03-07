@@ -1,5 +1,4 @@
-from pydantic import BaseModel, EmailStr
-
+from pydantic import BaseModel
 from src.Users_Module.dtos.user_dto import UserDTO
 
 

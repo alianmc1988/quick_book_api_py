@@ -12,11 +12,9 @@ from src.Users_Module.repository.Role_repository import (
 from src.Users_Module.value_objects.Role_Type import (
     Staff_Role_literal_Enum,
     conver_literal_to_numeric_role,
-    convert_numeric_to_literal_role,
 )
 from src.baseHandlers.Use_Case import Base_Use_Case
-from src.Users_Module.dtos.create_user_dto import Create_User_DTO
-from src.Users_Module.models.User_entity import User
+
 from src.Users_Module.repository.User_repository import (
     get_user_repository,
     UserRepository,

@@ -16,7 +16,6 @@ class SoftDelete_User_Controller(Base_Controller):
         self.id = id
 
     async def define(self) -> None:
-        logged_user = self.logged_user
         return await self.softDelete_User_Usecase.execute(
             id=self.id, logged_user=self.logged_user.id
         )

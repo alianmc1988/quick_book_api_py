@@ -1,14 +1,11 @@
-from datetime import timedelta, datetime
-from typing import Annotated, List
+from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, ExpiredSignatureError
 from passlib.context import CryptContext
 
 from database.db import get_db
 from src.Auth_Module.dtos.auth_dto import Auth_DTO
 from src.Auth_Module.dtos.auth_login_dto import AuthLogin_DTO
-from src.Users_Module.dtos.role_dto import Role_DTO
 from src.Users_Module.dtos.user_dto import UserDTO
 from src.Users_Module.models.User_entity import User
 from src.Users_Module.repository.User_repository import UserRepository

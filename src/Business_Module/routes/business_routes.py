@@ -1,8 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends, Request
 
-from setup.guards.auth_guard import authentication_middleware
-from src.Auth_Module.constants.access_levels import AccessLevel
 from src.Business_Module.controllers.business_controllers.create_business_controller import (
     Create_Business_Controller,
 )
@@ -81,7 +79,6 @@ async def list_all_business(
     ),
 ):
     controller = List_Businesses_Controller(use_case=list_businesses_use_case)
-    controller.access_control(request=request)
     return await controller.handle()
 
 

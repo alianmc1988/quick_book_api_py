@@ -5,7 +5,6 @@ from pydantic import BaseModel, EmailStr
 from src.Business_Module.dtos.business_dtos.social_Media_DTO import (
     Business_Social_Media_DTO,
 )
-from src.Business_Module.dtos.space_dtos.space_dto import Space_DTO
 from src.Business_Module.value_objects.Business_Type import Business_Type_Enum
 
 

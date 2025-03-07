@@ -5,9 +5,9 @@ env = os.getenv("PY_ENV")
 
 if env != "production" or env is not None:
     if env == "test":
-        file_env_path = os.path.join(os.path.dirname(__file__), f"../.env.test")
+        file_env_path = os.path.join(os.path.dirname(__file__), "../.env.test")
     else:
-        file_env_path = os.path.join(os.path.dirname(__file__), f"../.env")
+        file_env_path = os.path.join(os.path.dirname(__file__), "../.env")
 
     load_dotenv(dotenv_path=file_env_path)
 
@@ -36,7 +36,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30")
 
 
 def uvicorn_config():
-    print("port", PORT)
     return {
         "reload": DEBUG,
         "host": HOST,

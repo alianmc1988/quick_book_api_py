@@ -1,15 +1,7 @@
-from typing import List
 from fastapi import Depends
 from database.db import get_db
-from src.Users_Module.dtos.create_user_dto import Create_User_DTO
-from src.Users_Module.dtos.update_user_dto import Update_User_DTO
 from src.Users_Module.models.Role_entity import Role
-from src.Users_Module.models.User_entity import User
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from src.Users_Module.value_objects.Role_Type import Staff_Role_Type_Enum
-from src.errors.Not_Found_Exception import NotFoundException
-from sqlalchemy import exc
 
 
 class RoleRepository:
