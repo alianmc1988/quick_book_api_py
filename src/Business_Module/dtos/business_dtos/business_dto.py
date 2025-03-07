@@ -2,6 +2,7 @@ from typing import List
 from uuid import UUID
 from pydantic import BaseModel, EmailStr
 
+from src.Business_Module.dtos.business_dtos.feature_toggle_dto import FeatureToggleDto
 from src.Business_Module.dtos.business_dtos.social_Media_DTO import (
     Business_Social_Media_DTO,
 )
@@ -16,4 +17,8 @@ class Business_DTO(BaseModel):
     phone: str
     other_phone: str | None = None
     email: EmailStr
-    social_medias: List[Business_Social_Media_DTO] | None = None
+    social_medias: List[Business_Social_Media_DTO]
+    feature_toggles: List[FeatureToggleDto]
+
+    class Config:
+        orm_mode = True

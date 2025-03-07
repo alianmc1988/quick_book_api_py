@@ -1,3 +1,4 @@
+from http.client import HTTPException
 from sqlalchemy import (
     CheckConstraint,
     Column,
