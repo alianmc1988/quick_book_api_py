@@ -12,10 +12,8 @@ services:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
     networks:
-      - my_network
-
+      - qb_network
 
   api:
     build: .
@@ -30,19 +28,44 @@ services:
     depends_on:
       - db
     networks:
-      - my_network
+      - qb_network
     env_file:
       - .env
 
+  cache:
+    image: redis:6.2.6-bullseye
+    container_name: redis_cache
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis:/data'
+    networks:
+      - qb_network
 
-
-
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak_server
+    command: start-dev
+    environment:
+      KC_DB: postgres
+      KC_DB_URL_HOST: db
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: root
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - qb_network
 
 volumes:
   postgres_data:
   postgres_data_test:
+  redis:
 
 networks:
-  my_network:
+  qb_network:
     driver: bridge
-
