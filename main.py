@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from fastapi import FastAPI
 import uvicorn
 from configurations.config import uvicorn_config
@@ -18,6 +19,8 @@ async def init():
 
 
 app = FastAPI()
+
+
 bootstrap_routes(app)
 bootstrap_middlewares(app)
 

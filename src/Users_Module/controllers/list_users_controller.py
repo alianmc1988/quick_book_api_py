@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import List
 from fastapi import Depends, HTTPException
 
@@ -10,9 +11,12 @@ from src.Users_Module.services.list_users_usecase import (
 )
 
 
+@dataclass
 class List_Users_Controller(Base_Controller):
-    def __init__(self, list_users_usecase: List_Users_Usecase):
-        super().__init__(access_level=AccessLevel.SUDO)
+    def __init__(
+        self, list_users_usecase: List_Users_Usecase, access_level: AccessLevel
+    ):
+        super().__init__(access_level=access_level)
         self.list_users_usecase = list_users_usecase
 
     async def define(self) -> List[User]:
