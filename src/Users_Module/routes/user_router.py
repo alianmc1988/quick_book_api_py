@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Request
 from typing import List
 
 from setup.guards.auth_guard import authentication_middleware
+from src.Auth_Module.constants.access_levels import AccessLevel
 from src.Users_Module.controllers.create_role_controller import Create_Role_Controller
 from src.Users_Module.controllers.create_user_controller import Create_User_Controller
 from src.Users_Module.controllers.get_userById_controller import Get_UserById_Controller
@@ -54,7 +55,9 @@ async def create_user(
 ):
 
     controller = Create_User_Controller(
-        create_user_use_case=create_user_use_case, user_payload=user
+        create_user_use_case=create_user_use_case,
+        user_payload=user,
+        access_level=AccessLevel.GUEST,
     )
     return await controller.handle()
 
@@ -66,7 +69,9 @@ async def list_users(
     request: Request,
     list_users_use_case: List_Users_Usecase = Depends(get_list_users_use_case),
 ):
-    controller = List_Users_Controller(list_users_usecase=list_users_use_case)
+    controller = List_Users_Controller(
+        list_users_usecase=list_users_use_case, access_level=AccessLevel.SUDO
+    )
     controller.access_control(request=request)
     return await controller.handle()
 

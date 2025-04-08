@@ -42,25 +42,6 @@ services:
     networks:
       - qb_network
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    container_name: keycloak_server
-    command: start-dev
-    environment:
-      KC_DB: postgres
-      KC_DB_URL_HOST: db
-      KC_DB_URL_DATABASE: keycloak
-      KC_DB_USERNAME: root
-      KC_DB_PASSWORD: root
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-    networks:
-      - qb_network
-
 volumes:
   postgres_data:
   postgres_data_test:

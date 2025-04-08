@@ -1,15 +1,18 @@
 import asyncio
-from typing import Awaitable, Callable, List
+from dataclasses import dataclass
+import logging
+from typing import Awaitable, Callable, List, Union
 from fastapi import FastAPI
 
 
+@dataclass
 class Api:
     def __init__(
         self,
         app: FastAPI,
         db_func: Callable[[], Awaitable[None]],
-        middlewares: List[Callable[[FastAPI], FastAPI | None]] = [],
-        routers: List[Callable[[FastAPI], FastAPI | None]] = [],
+        middlewares: List[Callable[[FastAPI], Union[FastAPI, None]]] = list(),
+        routers: List[Callable[[FastAPI], Union[FastAPI, None]]] = list(),
     ):
         self.app = app
         self.middlewares = middlewares
@@ -40,9 +43,11 @@ class Api:
         return self.app
 
     def init(self) -> FastAPI:
+
         print("Api is setting up")
         asyncio.run(self.connect_db())
         self.bootstrap_middlewares()
         self.bootstrap_router()
+
         print("Api is now prepared to run")
         return self.app

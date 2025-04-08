@@ -13,9 +13,12 @@ from src.Users_Module.services.create_user_usecase import (
 
 class Create_User_Controller(Base_Controller):
     def __init__(
-        self, create_user_use_case: Create_User_Usecase, user_payload: Create_User_DTO
+        self,
+        create_user_use_case: Create_User_Usecase,
+        user_payload: Create_User_DTO,
+        access_level: AccessLevel,
     ):
-        super().__init__(access_level=AccessLevel.GUEST)
+        super().__init__(access_level=access_level)
         self.create_user_use_case = create_user_use_case
         self.user_payload = user_payload
 

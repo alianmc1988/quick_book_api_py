@@ -10,6 +10,7 @@ from database.db import get_db
 from src.Users_Module.models.User_entity import User
 from src.Users_Module.repository.User_repository import (
     UserRepository,
+    get_user_repository,
 )
 from src.errors.Unauthorized_Exception import UnauthorizedException
 from configurations.config import settings
@@ -48,8 +49,10 @@ async def authentication_middleware(
     request: Request,
     token: str = Depends(oauth2_bearer),
     db: AsyncSession = Depends(get_db),
+    userRepository: UserRepository = Depends(get_user_repository),
 ) -> None:
-    userRepository = UserRepository()
+    # userRepository = UserRepository()
+    # userRepository = UserRepository()
     user = await get_current_user(
         token=token,
         user_repository=userRepository,
